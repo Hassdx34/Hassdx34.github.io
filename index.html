@@ -112,7 +112,6 @@ section + section { margin-top: 7rem; }
 /* Diagrams */
 .dg text { fill: var(--text); font-family: var(--mono); }
 .dg .dim { fill: var(--mute); }
-.dg .big { fill: var(--white); font-weight: 600; }
 .dg .hit { fill: var(--white); }
 .dg rect { fill: #0c0c0c; stroke: var(--line-2); }
 .dg rect.hi { fill: #2a0a11; stroke: var(--crimson-text); }
@@ -230,7 +229,7 @@ dl { margin: 0; }
     <div class="hero-copy">
       <h1 class="hero-name">Hi, I'm Hasan<span class="wave" id="wave" aria-hidden="true"></span><span class="caret" aria-hidden="true">_</span></h1>
       <p class="hero-line"><span>Computer Science @ Indiana University '27 |</span> <span>SWE Intern @ Abridge, Summer 2026</span></p>
-      <p class="hero-sub">Shipped Pre-Visit to mobile for 18,000+ clinicians across 80+ health systems.</p>
+      <p class="hero-sub">Built clinician-facing healthcare AI software, including mobile pre-charting in Epic Haiku.</p>
       <nav class="ls" aria-label="Sections">
         <span class="prompt">$ ls</span>
         <a href="#projects">projects/</a>
@@ -270,14 +269,14 @@ dl { margin: 0; }
           <p class="xp-role">Software Engineer Intern</p>
         </div>
         <ul class="points">
-          <li>Shipped Pre-Visit to mobile in Epic Haiku for 18,000+ clinicians across 80+ health systems monthly, extending a Hyperspace-only feature.</li>
-          <li>Automated consent filing across 4 EHRs, processing 150,000+ records per month at a 99.9% success rate.</li>
-          <li>Recovered about 104,000 clinical notes during a live production incident with a Temporal-backed recovery control plane.</li>
-          <li>Migrated about 7,000 users across 8 production environments with zero downtime using dual writes and reconciliation.</li>
-          <li>Built citation infrastructure for a clinical decision-support agent and an agentic clinical calculator across 4 repositories.</li>
-          <li>Shipped a backend service and REST APIs for 6,000 identities across 8 environments on GCP.</li>
+          <li>Shipped a pre-charting feature to mobile in Epic Haiku, extending it beyond the desktop.</li>
+          <li>Automated consent filing across EHR integrations.</li>
+          <li>Built Temporal-backed recovery tooling with real-time status, monitoring, and safe retries.</li>
+          <li>Migrated users between data stores with zero downtime using dual writes and reconciliation.</li>
+          <li>Built citation infrastructure for clinical AI, tracing outputs back to source evidence.</li>
+          <li>Shipped a backend service and REST APIs for internal tooling on GCP.</li>
         </ul>
-        <div class="chips"><span>React</span><span>Next.js</span><span>Tailwind CSS</span><span>Temporal</span><span>PostgreSQL</span><span>LangChain</span><span>LiteLLM</span><span>Terraform</span><span>Istio</span><span>GCP</span></div>
+        <div class="chips"><span>React</span><span>Next.js</span><span>Tailwind CSS</span><span>Temporal</span><span>PostgreSQL</span><span>Terraform</span><span>GCP</span></div>
       </article>
       <article class="xp-card">
         <div class="xp-fx"></div>
@@ -347,14 +346,12 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 /* ---------- Content. Add a project link with links: [['GitHub', 'https://...']]. ---------- */
 const PROJECTS = [
-  { id: 'previsit', name: 'Pre-Visit in Epic Haiku', tag: 'abridge', sub: 'Pre-charting on mobile for 18,000+ clinicians',
-    points: ['Brought Pre-Visit to Epic Haiku, extending a feature that was only available in Hyperspace to mobile.',
-      'Reaches 18,000+ clinicians across 80+ health systems every month.',
+  { id: 'mobile', name: 'Mobile Pre-Charting', tag: 'abridge', sub: 'Pre-charting for clinicians in Epic Haiku',
+    points: ['Brought a pre-charting feature to Epic Haiku, extending it from desktop to mobile.',
       'Owned the backend and the React, Next.js, and Tailwind CSS frontend.'],
     tech: ['React', 'Next.js', 'Tailwind CSS'], links: [] },
-  { id: 'recovery', name: 'Clinical Note Recovery', tag: 'abridge', sub: 'About 104,000 notes recovered in a live incident',
-    points: ['Built a Temporal-backed recovery control plane with real-time status, monitoring, and safe retries.',
-      'Recovered about 104,000 clinical notes during a live production incident.'],
+  { id: 'recovery', name: 'Recovery Tooling', tag: 'abridge', sub: 'Durable retries with real-time status',
+    points: ['Built a Temporal-backed recovery control plane with real-time status, monitoring, and safe retries.'],
     tech: ['Temporal'], links: [] },
   { id: 'guard', name: 'MigrationGuard', tag: 'personal', sub: 'Stops unsafe Postgres migrations at the PR',
     points: ['Pairs SQL parsing with live-database introspection to predict each statement\'s locks, duration, and reversibility.',
@@ -362,30 +359,27 @@ const PROJECTS = [
       'Validated the classifier on 3,081 real migrations from 15 open-source projects.',
       'Added Rails support that renders SQL against a throwaway database, with 0 wrong results across 40 production migrations.'],
     tech: ['Python', 'PostgreSQL', 'Docker', 'GitHub Actions'], links: [] },
-  { id: 'consent', name: 'Consent Automation', tag: 'abridge', sub: '150,000+ records a month across 4 EHRs',
-    points: ['Automated consent filing across 4 EHRs, processing 150,000+ records per month at a 99.9% success rate.',
-      'Separately, created a Consent Customization platform that lets Abridge partners configure consent features for their organizations.'],
+  { id: 'consent', name: 'Consent Automation', tag: 'abridge', sub: 'Automated filing across EHR integrations',
+    points: ['Automated consent filing across EHR integrations.',
+      'Separately, created a configuration platform that lets partner organizations set up consent features.'],
     tech: ['EHR integrations'], links: [] },
-  { id: 'citations', name: 'Citations & Clinical Calculator', tag: 'abridge', sub: 'Traces agent output back to source evidence',
-    points: ['Built citation infrastructure for a clinical decision-support agent with LangChain and LiteLLM.',
-      'Evaluated model outputs against traceable source evidence.',
-      'Shipped an agentic clinical calculator end-to-end across 4 repositories.'],
-    tech: ['LangChain', 'LiteLLM'], links: [] },
-  { id: 'migration', name: 'Zero-Downtime User Migration', tag: 'abridge', sub: 'About 7,000 users, 8 environments',
-    points: ['Migrated about 7,000 users across 8 production environments with zero downtime.',
-      'Used dual writes and reconciliation to keep both stores in step during the move.',
-      'Decommissioned 8 Firestore collections afterward.'],
-    tech: ['Firestore', 'Dual writes'], links: [] },
-  { id: 'admin', name: 'Admin Platform Backend', tag: 'abridge', sub: 'One service, 8 environments, 6,000 identities',
-    points: ['Designed and shipped a backend service and REST APIs for the internal admin dashboard.',
-      'Built capability-based authorization in PostgreSQL, Istio service-to-service auth, and GCP infrastructure with Terraform.',
-      'Consolidated 3 admin services into one monorepo and standardized unit testing, code reviews, and CI/CD.'],
-    tech: ['PostgreSQL', 'Istio', 'GCP', 'Terraform'], links: [] },
-  { id: 'apex', name: 'Engineering Agent Tooling', tag: 'abridge', sub: '100+ AI-generated PRs across 4 repositories',
-    points: ['Developed an OAuth broker enabling 100+ AI-generated GitHub pull requests across 4 repositories, preserving attribution and repository permissions.',
-      'Built a Linear integration for APEX, an internal engineering agent, to create, update, and assign issues and retrieve project status.',
-      'Automated Slack alerts for two-hour SLA breaches.'],
-    tech: ['OAuth', 'GitHub', 'Linear', 'Slack'], links: [] },
+  { id: 'citations', name: 'Clinical AI Citations', tag: 'abridge', sub: 'Traces agent output back to source evidence',
+    points: ['Built citation infrastructure for clinical AI.',
+      'Evaluated model outputs against traceable source evidence.'],
+    tech: ['AI agents', 'Evaluation'], links: [] },
+  { id: 'migration', name: 'Zero-Downtime User Migration', tag: 'abridge', sub: 'Dual writes and reconciliation',
+    points: ['Migrated users between data stores with zero downtime.',
+      'Used dual writes and reconciliation to keep both stores in step during the move.'],
+    tech: ['Dual writes', 'Reconciliation'], links: [] },
+  { id: 'admin', name: 'Internal Platform Backend', tag: 'abridge', sub: 'Backend service and REST APIs',
+    points: ['Designed and shipped a backend service and REST APIs for internal tooling.',
+      'Built authorization and cloud infrastructure with Terraform.',
+      'Standardized unit testing, code reviews, and CI/CD.'],
+    tech: ['PostgreSQL', 'GCP', 'Terraform'], links: [] },
+  { id: 'agents', name: 'Engineering Agent Tooling', tag: 'abridge', sub: 'Safe GitHub access for AI agents',
+    points: ['Developed an OAuth broker that lets AI agents open GitHub pull requests while preserving attribution and repository permissions.',
+      'Built issue-tracker integrations for an engineering agent.'],
+    tech: ['OAuth', 'GitHub'], links: [] },
   { id: 'photoglobe', name: 'PhotoGlobe', tag: 'personal', sub: 'Real-time geospatial photos across 25+ countries',
     points: ['Built geospatial photo upload and retrieval across 25+ countries with optimized PostGIS queries.',
       'Syncs new uploads to all active sessions in real time over WebSockets.'],
@@ -417,29 +411,28 @@ const M = { a: 'middle' };
 const seeded = (n) => { let s = n; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
 
 const DIAGRAMS = {
-  previsit: () => SVG(B(28, 48, 232, 168) + T(42, 72, 'Hyperspace', { c: 'dim' }) + L(42, 88, 150) + L(42, 104, 196) + L(42, 120, 172) + L(42, 136, 118) + L(42, 152, 188) + L(42, 168, 92)
+  mobile: () => SVG(B(28, 48, 232, 168) + T(42, 72, 'desktop', { c: 'dim' }) + L(42, 88, 150) + L(42, 104, 196) + L(42, 120, 172) + L(42, 136, 118) + L(42, 152, 188) + L(42, 168, 92)
     + A(270, 132, 324, 132) + B(336, 32, 112, 204, '', { hi: 1, r: 12 }) + T(392, 62, 'Haiku', { a: 'middle', c: 'hit' }) + L(352, 80, 80, 'lit') + L(352, 98, 64) + L(352, 114, 78) + L(352, 130, 52) + L(352, 146, 72) + L(352, 162, 60)
-    + T(240, 274, '18,000+ clinicians / 80+ health systems', M)),
+    + T(240, 274, 'pre-charting, desktop to mobile', M)),
   recovery: () => SVG(B(24, 44, 112, 48, 'failed') + A(138, 68, 182, 68) + B(184, 44, 112, 48, 'safe retry', { hi: 1 }) + A(298, 68, 342, 68) + B(344, 44, 112, 48, 'recovered')
     + '<path d="M214 92C214 128 266 128 266 92" class="link"/>' + T(240, 142, 'real-time status', { a: 'middle', c: 'dim', z: 12 })
-    + T(240, 212, '104,000', { a: 'middle', c: 'big', z: 52 }) + T(240, 246, 'clinical notes, approx.', M)),
+    + T(240, 222, 'durable, observable recovery', M)),
   guard: () => SVG(B(24, 36, 138, 46, 'SQL parsing') + B(24, 112, 138, 46, 'live database') + A(164, 59, 204, 88) + A(164, 135, 204, 106) + B(206, 72, 104, 50, 'classifier', { hi: 1 })
     + A(312, 86, 340, 50) + A(312, 97, 340, 97) + A(312, 108, 340, 144) + B(342, 30, 116, 38, 'locks', { z: 13 }) + B(342, 78, 116, 38, 'duration', { z: 13 }) + B(342, 126, 116, 38, 'reversibility', { z: 12 })
     + B(136, 196, 208, 44, 'unsafe PR blocked', { hi: 1 }) + A(258, 124, 240, 194) + T(240, 276, '3,081 migrations / 15 open-source projects', { a: 'middle', z: 13 })),
-  consent: () => SVG(B(24, 104, 128, 60, 'consent', { hi: 1 }) + [28, 86, 144, 202].map((y, i) => B(344, y, 112, 40, `EHR ${i + 1}`) + A(154, 134, 342, y + 20)).join('')
-    + T(240, 274, '150,000+ records a month / 99.9% success', { a: 'middle', z: 13 })),
+  consent: () => SVG(B(24, 104, 128, 60, 'consent', { hi: 1 }) + [46, 114, 182].map((y) => B(344, y, 112, 40, 'EHR') + A(154, 134, 342, y + 20)).join('')
+    + T(240, 274, 'automated consent filing', { a: 'middle', z: 13 })),
   citations: () => SVG(B(24, 34, 196, 186) + T(38, 60, 'agent output', { c: 'dim', z: 13 }) + L(38, 78, 160) + L(38, 94, 138) + L(38, 110, 168, 'lit') + L(38, 126, 120) + L(38, 142, 156) + L(38, 158, 92)
     + B(260, 34, 196, 186) + T(274, 60, 'source evidence', { c: 'dim', z: 13 }) + L(274, 78, 150) + L(274, 94, 166) + L(274, 110, 128) + L(274, 126, 118) + L(274, 142, 162, 'lit') + L(274, 158, 140)
     + '<path d="M206 113C240 113 238 145 274 145" class="link"/>' + T(240, 268, 'outputs traced to source evidence', M)),
   migration: () => SVG(B(170, 22, 140, 42, 'app') + A(206, 66, 136, 112) + A(274, 66, 344, 112) + T(240, 104, 'dual writes', { a: 'middle', c: 'dim', z: 12 }) + B(56, 114, 150, 44, 'old store') + B(274, 114, 150, 44, 'new store', { hi: 1 })
     + A(136, 160, 196, 196) + A(344, 160, 284, 196) + B(150, 198, 180, 40, 'reconciliation')
-    + T(240, 274, 'about 7,000 users / 8 envs / 0 downtime', { a: 'middle', z: 13 })),
+    + T(240, 274, 'zero-downtime cutover', { a: 'middle', z: 13 })),
   admin: () => SVG(B(24, 36, 128, 48, 'dashboard') + A(154, 60, 186, 60) + B(188, 36, 128, 48, 'service', { hi: 1 }) + A(318, 60, 350, 60) + B(352, 36, 104, 48, 'PostgreSQL', { z: 13 })
-    + B(188, 118, 128, 40, 'Istio auth', { z: 13 }) + '<path d="M252 84V118"/>' + B(352, 118, 104, 40, 'capabilities', { z: 12 }) + '<path d="M404 84V118"/>'
-    + Array.from({ length: 8 }, (_, i) => `<rect x="${108 + i * 34}" y="190" width="24" height="24" class="hi"/>`).join('') + T(240, 262, '6,000 identities / 8 environments', M)),
-  apex: () => SVG([['Linear', 20], ['agent', 138], ['GitHub PR', 256], ['owners', 374]].map(([s, x], i) => B(x, 40, 88, 46, s, { hi: i === 1, z: 13 }) + (i < 3 ? A(x + 90, 63, x + 116, 63) : '')).join('')
-    + A(182, 88, 182, 136) + B(126, 138, 112, 42, '2h SLA check', { z: 12 }) + A(240, 159, 266, 159) + B(268, 138, 112, 42, 'Slack alert', { z: 13 })
-    + T(240, 232, '100+ AI-generated PRs / 4 repositories', { a: 'middle', z: 13 }) + T(240, 256, 'attribution + permissions preserved', { a: 'middle', c: 'dim', z: 13 })),
+    + B(188, 118, 128, 40, 'auth', { z: 13 }) + '<path d="M252 84V118"/>' + B(352, 118, 104, 40, 'permissions', { z: 12 }) + '<path d="M404 84V118"/>'
+    + T(240, 232, 'infrastructure as code', M)),
+  agents: () => SVG([['issue', 20], ['agent', 138], ['GitHub PR', 256], ['owners', 374]].map(([s, x], i) => B(x, 40, 88, 46, s, { hi: i === 1, z: 13 }) + (i < 3 ? A(x + 90, 63, x + 116, 63) : '')).join('')
+    + T(240, 160, 'OAuth broker', { a: 'middle', z: 13 }) + T(240, 188, 'attribution + permissions preserved', { a: 'middle', c: 'dim', z: 13 })),
   cinematch: () => { const r = seeded(77); let g = ''; for (let y = 0; y < 16; y++) for (let x = 0; x < 32; x++) g += `<rect x="${32 + x * 13}" y="${44 + y * 12}" width="10" height="9" class="${r() < .1 ? 'lit' : 'cell'}"/>`;
     return SVG(T(240, 28, 'Letterboxd data &gt; content-based recs', { a: 'middle', z: 13 }) + g + T(240, 276, '500+ films per user', M)); },
 };
