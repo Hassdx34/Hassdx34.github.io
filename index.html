@@ -709,17 +709,73 @@ function deskBoot() {
   desk.castShadow = false;
   box(30, 1.6, .15, 0x2a2119, 0, -1, 2.75);
 
-  /* Window with a moon */
-  box(3.5, 2.9, .12, 0x39435a, -7.1, 3.55, -2.36);
-  sheet(3.2, 2.6, tex(640, 520, (c, w, h) => {
-    const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#22365f'); g.addColorStop(1, '#4e6a9c'); c.fillStyle = g; c.fillRect(0, 0, w, h);
-    const r = seeded(9); c.fillStyle = '#dfe6f5'; for (let i = 0; i < 70; i++) c.fillRect(r() * w, r() * h * .8, 2, 2);
-    c.fillStyle = '#efe8d2'; c.beginPath(); c.arc(w * .7, h * .28, 46, 0, 7); c.fill();
-    const peaks = [[0, 440], [120, 310], [230, 410], [340, 250], [470, 400], [570, 320], [640, 430]];
-    c.fillStyle = '#1b2438'; c.beginPath(); c.moveTo(0, h); peaks.forEach(([x, y]) => c.lineTo(x, y)); c.lineTo(w, h); c.fill();
-    c.fillStyle = '#d7deea'; [[120, 310], [340, 250], [570, 320]].forEach(([x, y]) => { c.beginPath(); c.moveTo(x, y); c.lineTo(x + 26, y + 26); c.lineTo(x + 8, y + 20); c.lineTo(x - 6, y + 30); c.lineTo(x - 22, y + 22); c.fill(); });
-  }), -7.1, 3.55, -2.29, 0, { emissive: 0x8fa6cf, emissiveIntensity: .1 });
-  box(3.2, .07, .06, 0x39435a, -7.1, 3.55, -2.26); box(.07, 2.6, .06, 0x39435a, -7.1, 3.55, -2.26);
+  /* Window over the Chicago skyline at night */
+  box(4.62, 2.2, .12, 0x39435a, 0, 3.85, -2.36);
+  const skyline = tex(1024, 512, (c, w, h) => {
+    const ground = 424, r = seeded(17);
+    const sky = c.createLinearGradient(0, 0, 0, ground);
+    [['#090f26', 0], ['#17214a', .5], ['#46356b', .8], ['#b8664f', 1]].forEach(([k, at]) => sky.addColorStop(at, k));
+    c.fillStyle = sky; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#dfe6f5'; for (let i = 0; i < 90; i++) c.fillRect(r() * w, r() * 230, 2, 2);
+    c.fillStyle = '#efe8d2'; c.beginPath(); c.arc(112, 92, 34, 0, 7); c.fill();
+    const lights = (x, y, bw, bh, odds = .42) => {
+      for (let wy = y + 8; wy < Math.min(y + bh, ground) - 4; wy += 8) for (let wx = x + 4; wx < x + bw - 4; wx += 7)
+        if (r() < odds) { c.fillStyle = r() < .2 ? '#fff3cf' : '#f2bd68'; c.fillRect(wx, wy, 3, 4); }
+    };
+    const block = (x, y, bw, color, odds) => { c.fillStyle = color; c.fillRect(x, y, bw, ground - y); lights(x, y, bw, ground - y, odds); };
+    const mast = (x, top, base) => { c.fillStyle = '#c9d0de'; c.fillRect(x, top, 2, base - top); c.fillStyle = '#ff4a3d'; c.fillRect(x - 1, top - 3, 4, 4); };
+    for (let x = -10; x < w;) { const bw = 34 + r() * 34; block(x, 248 + r() * 92, bw, '#18203c', .28); x += bw + 2; }
+    /* Marina City */
+    [392, 430].forEach(x => {
+      c.fillStyle = '#39415a'; c.fillRect(x, 262, 32, ground - 262); c.beginPath(); c.arc(x + 16, 262, 16, Math.PI, 0); c.fill();
+      c.fillStyle = '#9aa3b8'; for (let y = 256; y < 410; y += 7) c.fillRect(x + 3, y, 26, 2);
+    });
+    /* Willis Tower */
+    [[190, 216, 112], [204, 150, 84], [218, 96, 56]].forEach(([x, y, bw]) => block(x, y, bw, '#090c17', .34));
+    mast(232, 28, 96); mast(258, 28, 96);
+    /* Trump Tower */
+    [[474, 236, 72], [484, 170, 52], [494, 112, 32]].forEach(([x, y, bw]) => block(x, y, bw, '#44506e', .3));
+    mast(509, 62, 112);
+    /* Aon Center */
+    block(572, 120, 66, '#a9b2c6', .12);
+    c.fillStyle = '#7e889f'; for (let x = 578; x < 636; x += 9) c.fillRect(x, 120, 2, ground - 120);
+    /* John Hancock Center, tapered with X-bracing */
+    const foot = 112, top = 62, hx = 716, hy = 104, side = (y) => (foot - (foot - top) * (ground - y) / (ground - hy)) / 2;
+    c.fillStyle = '#0a0d18'; c.beginPath(); c.moveTo(hx - foot / 2, ground); c.lineTo(hx - top / 2, hy); c.lineTo(hx + top / 2, hy); c.lineTo(hx + foot / 2, ground); c.fill();
+    c.strokeStyle = '#5e6780'; c.lineWidth = 2; c.beginPath();
+    for (let i = 0; i < 5; i++) {
+      const y0 = hy + (ground - hy) * i / 5, y1 = hy + (ground - hy) * (i + 1) / 5;
+      c.moveTo(hx - side(y0), y0); c.lineTo(hx + side(y1), y1); c.moveTo(hx + side(y0), y0); c.lineTo(hx - side(y1), y1);
+    }
+    c.stroke();
+    mast(700, 36, 104); mast(730, 36, 104);
+    /* Lake Michigan, with Navy Pier and its Ferris wheel */
+    const lake = c.createLinearGradient(0, ground, 0, h);
+    lake.addColorStop(0, '#22284a'); lake.addColorStop(1, '#0a0f24');
+    c.fillStyle = lake; c.fillRect(0, ground, w, h - ground);
+    for (let i = 0; i < 150; i++) { c.fillStyle = r() < .6 ? 'rgba(242,189,104,.5)' : 'rgba(255,255,255,.28)'; c.fillRect(r() * w, ground + 6 + r() * 76, 8 + r() * 26, 2); }
+    const fx = 906, fy = 354, fr = 58;
+    c.fillStyle = '#2a3048'; c.fillRect(790, ground - 6, 234, 8);
+    c.strokeStyle = '#e8506a'; c.lineWidth = 3; c.beginPath(); c.arc(fx, fy, fr, 0, 7); c.stroke();
+    c.lineWidth = 1.5; c.beginPath();
+    for (let i = 0; i < 12; i++) { const t = i * Math.PI / 6; c.moveTo(fx, fy); c.lineTo(fx + Math.cos(t) * fr, fy + Math.sin(t) * fr); }
+    c.moveTo(fx - 26, ground - 6); c.lineTo(fx, fy); c.lineTo(fx + 26, ground - 6); c.stroke();
+    for (let i = 0; i < 12; i++) { const t = i * Math.PI / 6; c.fillStyle = '#ffe7a8'; c.fillRect(fx + Math.cos(t) * fr - 3, fy + Math.sin(t) * fr - 3, 6, 6); }
+  });
+  sheet(4.4, 1.98, skyline, 0, 3.85, -2.29, 0, { emissive: 0xffffff, emissiveMap: skyline, emissiveIntensity: .5 });
+  [-.74, .74].forEach(x => box(.06, 1.98, .06, 0x39435a, x, 3.85, -2.26));
+
+  /* Chicago flag */
+  sheet(2.75, 1.65, tex(500, 300, (c, w, h) => {
+    c.fillStyle = '#f2efe6'; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#6fb3dc'; c.fillRect(0, 50, w, 50); c.fillRect(0, 200, w, 50);
+    c.fillStyle = '#c8102e';
+    [110, 203, 297, 390].forEach(x => {
+      c.beginPath();
+      for (let i = 0; i < 12; i++) { const t = i * Math.PI / 6 - Math.PI / 2, d = i % 2 ? 15 : 34; c.lineTo(x + Math.cos(t) * d, 150 + Math.sin(t) * d); }
+      c.fill();
+    });
+  }), -7.1, 3.7, -2.33, .02);
 
   /* Posters */
   box(2.2, 3, .06, 0x8d8775, -3.75, 3.7, -2.38);
@@ -783,11 +839,11 @@ function deskBoot() {
   }), 7.1, 3.7, -2.34);
 
   /* IU pennant, drawn as a cut-out */
-  sheet(3.4, 1.05, tex(1020, 315, (c, w, h) => {
+  sheet(2.3, .71, tex(1020, 315, (c, w, h) => {
     c.fillStyle = '#9a1228'; c.beginPath(); c.moveTo(0, 0); c.lineTo(w, h / 2); c.lineTo(0, h); c.fill();
     c.fillStyle = '#e9e3d0'; c.fillRect(0, 0, 44, h);
     c.font = `700 112px ${PLEX}`; c.textBaseline = 'middle'; c.fillText('INDIANA', 76, h / 2 + 6);
-  }), 0, 4.75, -2.33, -.03, { transparent: true, alphaTest: .4 });
+  }), 0, 5.32, -2.33, -.03, { transparent: true, alphaTest: .4 });
 
   /* Printout pinned to the wall */
   sheet(1.45, 1.05, tex(435, 315, (c, w, h) => {
