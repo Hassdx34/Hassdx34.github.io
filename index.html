@@ -1004,9 +1004,8 @@ function boot() {
   ready.catch(() => {}).then(() => { if (!done) raf = requestAnimationFrame(frame); });
 }
 
-const seen = () => { try { return sessionStorage.getItem('hs-booted') === '1'; } catch { return false; } };
-const mark = () => { try { sessionStorage.setItem('hs-booted', '1'); } catch { /* the intro simply replays */ } };
-if (!reduced && (!seen() || location.hash === '#desk')) { mark(); boot(); }
+const returning = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+if (!reduced && (!returning || location.hash === '#desk')) boot();
 $('#reboot').addEventListener('click', () => { if (reduced) scrollTo(0, 0); else boot(); });
 })();
 </script>
